@@ -13,6 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
         single();
+        System.out.println("=============");
+        System.out.println("BUILD SUCCESS");
+        System.out.println("=============");
     }
 
     public static void many2many() {
@@ -41,7 +44,7 @@ public class Main {
 
     public static void single() {
         Invoker invoker = new SingleInvoker.Builder()
-                .setTableName("user")
+                .setTableName("mall_user")
                 .setClassName("User")
                 .build();
         invoker.execute();

@@ -10,27 +10,22 @@ import java.io.Serializable;
  */
 public class ColumnInfo implements Serializable {
     private String columnName; // 列名
-    private int type; // 类型代码
+    private int type; // 数据库数据类型代码
     private String propertyName; // 属性名
-    private boolean isPrimaryKey; // 是否主键
+    private Boolean ifPrimaryKey; // 是否主键
+    private String javaType;//java数据类型
+    private String jdbcType;//java数据类型
 
     public ColumnInfo() {
 
     }
 
-    public ColumnInfo(String columnName, int type, boolean isPrimaryKey) {
+    public ColumnInfo(String columnName, int type, Boolean ifPrimaryKey,String jdbcType) {
         this.columnName = columnName;
         this.type = type;
         this.propertyName = StringUtil.columnName2PropertyName(columnName);
-        this.isPrimaryKey = isPrimaryKey;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+        this.ifPrimaryKey = ifPrimaryKey;
+        this.jdbcType=jdbcType;
     }
 
     public int getType() {
@@ -41,6 +36,30 @@ public class ColumnInfo implements Serializable {
         this.type = type;
     }
 
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
+    public String getJdbcType() {
+        return jdbcType;
+    }
+
+    public void setJdbcType(String jdbcType) {
+        this.jdbcType = jdbcType;
+    }
+
+    public String getJavaType() {
+        return javaType;
+    }
+
+    public void setJavaType(String javaType) {
+        this.javaType = javaType;
+    }
+
     public String getPropertyName() {
         return propertyName;
     }
@@ -49,11 +68,12 @@ public class ColumnInfo implements Serializable {
         this.propertyName = propertyName;
     }
 
-    public boolean isPrimaryKey() {
-        return isPrimaryKey;
+
+    public Boolean getIfPrimaryKey() {
+        return ifPrimaryKey;
     }
 
-    public void setPrimaryKey(boolean primaryKey) {
-        isPrimaryKey = primaryKey;
+    public void setIfPrimaryKey(Boolean ifPrimaryKey) {
+        this.ifPrimaryKey = ifPrimaryKey;
     }
 }

@@ -34,6 +34,11 @@ public abstract class AbstractTask implements Serializable {
         this.className = className;
     }
 
+    public AbstractTask(String className,List<ColumnInfo> tableInfos) {
+        this.className = className;
+        this.tableInfos=tableInfos;
+    }
+
     /**
      * Entity
      *

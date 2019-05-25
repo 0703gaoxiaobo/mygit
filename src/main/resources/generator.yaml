@@ -1,13 +1,35 @@
+#数据库配置
 db:
-  url:
-  username:
-  password:
-author: unknown
-packageName:
-path:
-  controller: controller
-  service: service.impl
-  interf: service
+  url: jdbc:mysql://116.62.229.217/mall
+  username: mall
+  password: mall
+#作者
+author: gxb
+#包名
+packageName: com.jiabian
+#是否使用默认路径 true表示使用当前项目路径 false表示不使用(即：自定义)
+defaultPath: false
+parentProject: D:\ideaProjects\MallSystem\parent
+subProject:
+  controller: platform
+  service: business
+  interf: business-api
   dao: dao
-  entity: entity
-  mapper: mappers
+  entity: dao
+  mapper: dao
+  request: io
+  response: io
+  queryHelper: dao
+
+#生成文件位置/路径配置
+path:
+  controller: control.mall
+  service: mall
+  interf: mall
+  dao: dao.basic
+  entity: beans.basic
+  mapper: dao.basic.generated
+  request: mall.request
+  response: mall.response
+  queryHelper: beans.basic
+

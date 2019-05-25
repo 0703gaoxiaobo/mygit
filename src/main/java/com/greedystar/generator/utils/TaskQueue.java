@@ -15,25 +15,35 @@ public class TaskQueue {
 
     private LinkedList<AbstractTask> taskQueue = new LinkedList<>();
 
-    private void initCommonTasks(String className) {
+    private void initCommonTasks(String className,List<ColumnInfo> tableInfos) {
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getController())) {
-            taskQueue.add(new ControllerTask(className));
+            taskQueue.add(new ControllerTask(className,tableInfos));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getService())) {
-            taskQueue.add(new ServiceTask(className));
+            taskQueue.add(new ServiceTask(className,tableInfos));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getInterf())) {
-            taskQueue.add(new InterfaceTask(className));
+            taskQueue.add(new InterfaceTask(className,tableInfos));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getDao())) {
-            taskQueue.add(new DaoTask(className));
+            taskQueue.add(new DaoTask(className,tableInfos));
         }
+
     }
 
     public void initSingleTasks(String className, String tableName, List<ColumnInfo> tableInfos) {
-        initCommonTasks(className);
+        initCommonTasks(className,tableInfos);
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
             taskQueue.add(new EntityTask(className, tableInfos));
+        }
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getQueryHelper())) {
+            taskQueue.add(new QueryHelperTask(className, tableInfos));
+        }
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getRequest())) {
+            taskQueue.add(new RequestTask(className,tableInfos));
+        }
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getResponse())) {
+            taskQueue.add(new ResponseTask(className,tableInfos));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
             taskQueue.add(new MapperTask(className, tableName, tableInfos));
@@ -41,10 +51,13 @@ public class TaskQueue {
     }
 
     public void initOne2ManyTasks(String tableName, String className, String parentTableName, String parentClassName, String foreignKey, List<ColumnInfo> tableInfos, List<ColumnInfo> parentTableInfos) {
-        initCommonTasks(className);
+        initCommonTasks(className,tableInfos);
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
             taskQueue.add(new EntityTask(className, parentClassName, foreignKey, tableInfos));
             taskQueue.add(new EntityTask(parentClassName, parentTableInfos));
+            taskQueue.add(new QueryHelperTask(className, tableInfos));
+            taskQueue.add(new RequestTask(className,tableInfos));
+            taskQueue.add(new ResponseTask(className,tableInfos));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
             taskQueue.add(new MapperTask(tableName, className, parentTableName, parentClassName, foreignKey, tableInfos, parentTableInfos));
@@ -52,10 +65,13 @@ public class TaskQueue {
     }
 
     public void initMany2ManyTasks(String tableName, String className, String parentTableName, String parentClassName, String foreignKey, String parentForeignKey, String relationalTableName, List<ColumnInfo> tableInfos, List<ColumnInfo> parentTableInfos) {
-        initCommonTasks(className);
+        initCommonTasks(className,tableInfos);
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
             taskQueue.add(new EntityTask(className, parentClassName, foreignKey, parentForeignKey, tableInfos));
             taskQueue.add(new EntityTask(parentClassName, parentTableInfos));
+            taskQueue.add(new QueryHelperTask(className, tableInfos));
+            taskQueue.add(new RequestTask(className,tableInfos));
+            taskQueue.add(new ResponseTask(className,tableInfos));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
             taskQueue.add(new MapperTask(tableName, className, parentTableName, parentClassName, foreignKey, parentForeignKey, relationalTableName, tableInfos, parentTableInfos));

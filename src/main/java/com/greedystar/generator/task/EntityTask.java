@@ -1,10 +1,12 @@
 package com.greedystar.generator.task;
 
 import com.greedystar.generator.entity.ColumnInfo;
+import com.greedystar.generator.entity.Configuration;
 import com.greedystar.generator.task.base.AbstractTask;
 import com.greedystar.generator.utils.*;
 import freemarker.template.TemplateException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,24 +44,26 @@ public class EntityTask extends AbstractTask {
     @Override
     public void run() throws IOException, TemplateException {
         // 生成Entity填充数据
+        Configuration configuration=ConfigUtil.getConfiguration();
         System.out.println("Generating " + className + ".java");
-        Map<String, String> entityData = new HashMap<>();
+        Map<String, Object> entityData = new HashMap<>();
         entityData.put("BasePackageName", ConfigUtil.getConfiguration().getPackageName());
         entityData.put("EntityPackageName", ConfigUtil.getConfiguration().getPath().getEntity());
         entityData.put("Author", ConfigUtil.getConfiguration().getAuthor());
         entityData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         entityData.put("ClassName", className);
-        if (!StringUtil.isBlank(parentForeignKey)) { // 多对多：主表实体
-            entityData.put("Properties", GeneratorUtil.generateEntityProperties(parentClassName, tableInfos));
-            entityData.put("Methods", GeneratorUtil.generateEntityMethods(parentClassName, tableInfos));
-        } else if (!StringUtil.isBlank(foreignKey)) { // 多对一：主表实体
-            entityData.put("Properties", GeneratorUtil.generateEntityProperties(parentClassName, tableInfos, foreignKey));
-            entityData.put("Methods", GeneratorUtil.generateEntityMethods(parentClassName, tableInfos, foreignKey));
-        } else { // 单表关系
-            entityData.put("Properties", GeneratorUtil.generateEntityProperties(tableInfos));
-            entityData.put("Methods", GeneratorUtil.generateEntityMethods(tableInfos));
+        GeneratorUtil.chooseMoudle(entityData,parentClassName,parentForeignKey,foreignKey,tableInfos);
+
+        String parentProject=configuration.getParentProject();
+        if(!parentProject.endsWith("\\")||!parentProject.endsWith("/")){
+            parentProject=parentProject+ File.separator+StringUtil.package2Path(configuration.getSubProject().getEntity());
+        }else{
+            parentProject=parentProject+StringUtil.package2Path(configuration.getSubProject().getEntity());
         }
-        String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntity());
+
+        String filePath = FileUtil.getSourcePath(configuration.getDefaultPath(),parentProject)
+                + StringUtil.package2Path(configuration.getPackageName())
+                + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntity());
         String fileName = className + ".java";
         // 生成Entity文件
         FileUtil.generateToJava(FreemarketConfigUtils.TYPE_ENTITY, entityData, filePath + fileName);

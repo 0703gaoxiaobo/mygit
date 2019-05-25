@@ -56,10 +56,10 @@ public class TypeUtil {
                 sb.append("Date");
                 break;
             case Types.TIME:
-                sb.append("Time");
+                sb.append("Date");
                 break;
             case Types.TIMESTAMP:
-                sb.append("Timestamp");
+                sb.append("Date");
                 break;
             case Types.NCLOB:
             case Types.CLOB:

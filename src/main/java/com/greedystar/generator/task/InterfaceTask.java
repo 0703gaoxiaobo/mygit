@@ -1,16 +1,17 @@
 package com.greedystar.generator.task;
 
+import com.greedystar.generator.entity.ColumnInfo;
+import com.greedystar.generator.entity.Configuration;
 import com.greedystar.generator.task.base.AbstractTask;
-import com.greedystar.generator.utils.ConfigUtil;
-import com.greedystar.generator.utils.FileUtil;
-import com.greedystar.generator.utils.FreemarketConfigUtils;
-import com.greedystar.generator.utils.StringUtil;
+import com.greedystar.generator.utils.*;
 import freemarker.template.TemplateException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,23 +20,39 @@ import java.util.Map;
  */
 public class InterfaceTask extends AbstractTask {
 
-    public InterfaceTask(String className) {
-        super(className);
+    public InterfaceTask(String className, List<ColumnInfo> tableInfos) {
+        super(className,tableInfos);
     }
 
     @Override
     public void run() throws IOException, TemplateException {
         // 生成Service接口填充数据
+        Configuration configuration=ConfigUtil.getConfiguration();
         System.out.println("Generating " + className + "Service.java");
         Map<String, String> interfaceData = new HashMap<>();
-        interfaceData.put("BasePackageName", ConfigUtil.getConfiguration().getPackageName());
-        interfaceData.put("InterfacePackageName", ConfigUtil.getConfiguration().getPath().getInterf());
-        interfaceData.put("EntityPackageName", ConfigUtil.getConfiguration().getPath().getEntity());
-        interfaceData.put("Author", ConfigUtil.getConfiguration().getAuthor());
+        interfaceData.put("BasePackageName", configuration.getPackageName());
+        interfaceData.put("InterfacePackageName", configuration.getPath().getInterf());
+        interfaceData.put("EntityPackageName", configuration.getPath().getEntity());
+        interfaceData.put("Author", configuration.getAuthor());
         interfaceData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         interfaceData.put("ClassName", className);
+        interfaceData.put("PrimaryKey", GeneratorUtil.getPrimaryKeyColumnInfo(tableInfos).getPropertyName());
         interfaceData.put("EntityName", StringUtil.firstToLowerCase(className));
-        String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getInterf());
+        interfaceData.put("DaoPackageName", configuration.getPath().getDao());
+        interfaceData.put("QueryHelperPackageName",configuration.getPath().getQueryHelper());
+        interfaceData.put("RequestPackageName", configuration.getPath().getRequest());
+        interfaceData.put("ResponsePackageName", configuration.getPath().getResponse());
+
+        String parentProject=configuration.getParentProject();
+        if(!parentProject.endsWith("\\")||!parentProject.endsWith("/")){
+            parentProject=parentProject+ File.separator+StringUtil.package2Path(configuration.getSubProject().getInterf());
+        }else{
+            parentProject=parentProject+StringUtil.package2Path(configuration.getSubProject().getInterf());
+        }
+
+        String filePath = FileUtil.getSourcePath(configuration.getDefaultPath(),parentProject)
+                + StringUtil.package2Path(configuration.getPackageName())
+                + StringUtil.package2Path(configuration.getPath().getInterf());
         String fileName = className + "Service.java";
         // 生成Service接口文件
         FileUtil.generateToJava(FreemarketConfigUtils.TYPE_INTERFACE, interfaceData, filePath + fileName);

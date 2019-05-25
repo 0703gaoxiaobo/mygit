@@ -3,6 +3,7 @@ package com.greedystar.generator.db;
 
 import com.greedystar.generator.entity.ColumnInfo;
 import com.greedystar.generator.utils.ConfigUtil;
+import com.greedystar.generator.utils.TypeUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -58,10 +59,11 @@ public class ConnectionUtil {
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
             ColumnInfo info;
             if (metaData.getColumnName(i).equals(primaryKey)) {
-                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), true);
+                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), true,metaData.getColumnTypeName(i));
             } else {
-                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), false);
+                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), false,metaData.getColumnTypeName(i));
             }
+            info.setJavaType(TypeUtil.parseTypeFormSqlType(info.getType()));
             columnInfos.add(info);
         }
         statement.close();

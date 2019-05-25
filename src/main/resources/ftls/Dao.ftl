@@ -1,7 +1,12 @@
 package ${BasePackageName}${DaoPackageName};
 
 import ${BasePackageName}${EntityPackageName}.${ClassName};
+import ${BasePackageName}${QueryHelperPackageName}.${ClassName}QueryHelper;
+import ${BasePackageName}${RequestPackageName}.${ClassName}Req;
+import ${BasePackageName}${ResponsePackageName}.${ClassName}Res;
+import ${BasePackageName}base.PagesModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,20 +15,33 @@ import java.util.List;
  * Date  ${Date}
  */
 @Mapper
-public interface ${ClassName}Dao {
+public interface ${ClassName}Mapper {
 
-    public ${ClassName} get(String id);
+    int countBy${ClassName}QueryHelper(${ClassName}QueryHelper ${EntityName}QueryHelper);
 
-    public List<${ClassName}> findList(${ClassName} ${EntityName});
+    int deleteBy${ClassName}QueryHelper(${ClassName}QueryHelper ${EntityName}QueryHelper);
 
-    public List<${ClassName}> findAllList();
+    int deleteByPrimaryKey(Long ${PrimaryKey});
 
-    public int insert(${ClassName} ${EntityName});
+    int insert(${ClassName} ${EntityName});
 
-    public int insertBatch(List<${ClassName}> ${EntityName}s);
+    int insertSelective(${ClassName} ${EntityName});
 
-    public int update(${ClassName} ${EntityName});
+    List<${ClassName}> selectBy${ClassName}QueryHelper(${ClassName}QueryHelper ${EntityName}QueryHelper);
 
-    public int delete(${ClassName} ${EntityName});
+    ${ClassName} selectByPrimaryKey(Long ${PrimaryKey});
+
+    int updateBy${ClassName}QueryHelperSelective(@Param("${EntityName}") ${ClassName} ${EntityName}, @Param("${EntityName}QueryHelper") ${ClassName}QueryHelper ${EntityName}QueryHelper);
+
+    int updateBy${ClassName}QueryHelper(@Param("${EntityName}") ${ClassName} ${EntityName}, @Param("${EntityName}QueryHelper") ${ClassName}QueryHelper ${EntityName}QueryHelper);
+
+    int updateByPrimaryKeySelective(${ClassName} ${EntityName});
+
+    int updateByPrimaryKey(${ClassName} ${EntityName});
+
+    List<${ClassName}Res> select${ClassName}List(PagesModel<${ClassName}Req, ${ClassName}Res> pagesModel);
+
+    int count${ClassName}List(PagesModel<${ClassName}Req, ${ClassName}Res> pagesModel);
+
 
 }

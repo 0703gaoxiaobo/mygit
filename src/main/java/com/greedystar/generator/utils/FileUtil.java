@@ -19,10 +19,23 @@ public class FileUtil {
      * @throws TemplateException
      */
     public static void generateToJava(int type, Object data, String filePath) throws IOException, TemplateException {
+        System.out.println(filePath);
+//        if(!StringUtil.isBlank(filePath)){
+//            return;
+//        }
         File file = new File(filePath);
+        //判断文件是否已经存在
         if (file.exists()) {
             System.err.println("ERROR: " + file.getPath().substring(file.getPath().lastIndexOf("\\") + 1, file.getPath().length()) + " 已存在，请手动修改");
             return;
+        }else {
+            //如果文件不存在则创建
+            String dir=filePath.substring(0,filePath.lastIndexOf("\\"));
+            File mkdir=new File(dir);
+            if(!mkdir.exists()){
+                mkdir.mkdirs();
+            }
+            file.createNewFile();
         }
         Template tpl = getTemplate(type); // 获取模板文件
         // 填充数据
@@ -58,15 +71,26 @@ public class FileUtil {
                 return FreemarketConfigUtils.getInstance().getTemplate("Mapper.ftl");
             case FreemarketConfigUtils.TYPE_INTERFACE:
                 return FreemarketConfigUtils.getInstance().getTemplate("Interface.ftl");
+            case FreemarketConfigUtils.TYPE_REQUEST:
+                return FreemarketConfigUtils.getInstance().getTemplate("Req.ftl");
+            case FreemarketConfigUtils.TYPE_RESPONSE:
+                return FreemarketConfigUtils.getInstance().getTemplate("Res.ftl");
+            case FreemarketConfigUtils.TYPE_QUERYHELPER:
+                return FreemarketConfigUtils.getInstance().getTemplate("QueryHelper.ftl");
             default:
                 return null;
         }
     }
 
-    private static String getBasicProjectPath() {
-        String path = new File(FileUtil.class.getClassLoader().getResource("").getFile()).getPath() + File.separator;
+    private static String getBasicProjectPath(boolean defaultPath,String parentProject) {
+        String path="";
         StringBuilder sb = new StringBuilder();
-        sb.append(path.substring(0, path.indexOf("target"))).append("src").append(File.separator).append("main").append(File.separator);
+        if(defaultPath){
+             path= new File(FileUtil.class.getClassLoader().getResource("").getFile()).getPath() + File.separator;
+             sb.append(path.substring(0, path.indexOf("target"))).append("src").append(File.separator).append("main").append(File.separator);
+        }else{
+            sb.append("src").append(File.separator).append("main").append(File.separator);
+        }
         return sb.toString();
     }
 
@@ -75,9 +99,13 @@ public class FileUtil {
      *
      * @return
      */
-    public static String getSourcePath() {
+    public static String getSourcePath(boolean defaultPath,String parentProject) {
         StringBuilder sb = new StringBuilder();
-        sb.append(getBasicProjectPath()).append("java").append(File.separator);
+        if(!defaultPath){
+            sb.append(parentProject);
+        }
+        sb.append(getBasicProjectPath(defaultPath,parentProject)).append("java").append(File.separator);
+
         return sb.toString();
     }
 
@@ -86,9 +114,9 @@ public class FileUtil {
      *
      * @return
      */
-    public static String getResourcePath() {
+    public static String getResourcePath(boolean defaultPath,String parentProject) {
         StringBuilder sb = new StringBuilder();
-        sb.append(getBasicProjectPath()).append("resources").append(File.separator);
+        sb.append(getBasicProjectPath(defaultPath,parentProject)).append("resources").append(File.separator);
         return sb.toString();
     }
 

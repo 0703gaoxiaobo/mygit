@@ -14,6 +14,9 @@ public class FreemarketConfigUtils {
     public final static int TYPE_CONTROLLER = 3;
     public final static int TYPE_MAPPER = 4;
     public final static int TYPE_INTERFACE = 5;
+    public final static int TYPE_REQUEST = 6;
+    public final static int TYPE_RESPONSE = 7;
+    public final static int TYPE_QUERYHELPER = 8;
     private static Configuration configuration;
 
     public static synchronized Configuration getInstance() {
