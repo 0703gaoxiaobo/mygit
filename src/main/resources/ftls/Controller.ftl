@@ -5,7 +5,7 @@ import ${BasePackageName}${ServicePackageName}.${ClassName}Service;
 import ${BasePackageName}${RequestPackageName}.${ClassName}Req;
 import ${BasePackageName}${ResponsePackageName}.${ClassName}Res;
 import ${BasePackageName}base.PagesModel;
-import ${BasePackageName}base.controller.BaseController;
+import ${BasePackageName}base.control.BaseController;
 import ${BasePackageName}util.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class ${ClassName}Controller extends BaseController<${ClassName}Req, ${Cl
 
     @RequestMapping("/toUpdate")
     public String toUpdate(ModelMap map,Long ${PrimaryKey}){
-        ${ClassName} ${EntityName} = ${EntityName}Service.get(${PrimaryKey});
+        ${ClassName} ${EntityName} = ${EntityName}Service.selectByPrimaryKey(${PrimaryKey});
         map.put("${EntityName}",${EntityName});
         return "";
     }
@@ -77,7 +77,7 @@ public class ${ClassName}Controller extends BaseController<${ClassName}Req, ${Cl
 
     /**
     * 单一删除
-    * @param ${EntityName}
+    * @param ${PrimaryKey}
     * @return
     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

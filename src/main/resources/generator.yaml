@@ -20,6 +20,7 @@ subProject:
   request: io
   response: io
   queryHelper: dao
+  html: platform
 
 #生成文件位置/路径配置
 path:
@@ -32,4 +33,5 @@ path:
   request: mall.request
   response: mall.response
   queryHelper: beans.basic
+  html: src.main.webapp.htmls.mall
 

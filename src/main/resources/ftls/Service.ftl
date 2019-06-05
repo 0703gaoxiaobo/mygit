@@ -23,7 +23,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service{
 
     @Override
     public int countBy${ClassName}QueryHelper(${ClassName}QueryHelper ${EntityName}QueryHelper){
-        return ${EntityName}Mapper.countBy${EntityName}QueryHelper(${ClassName}QueryHelper);
+        return ${EntityName}Mapper.countBy${ClassName}QueryHelper(${EntityName}QueryHelper);
     }
 
     @Override

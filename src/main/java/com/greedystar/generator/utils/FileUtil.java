@@ -77,6 +77,12 @@ public class FileUtil {
                 return FreemarketConfigUtils.getInstance().getTemplate("Res.ftl");
             case FreemarketConfigUtils.TYPE_QUERYHELPER:
                 return FreemarketConfigUtils.getInstance().getTemplate("QueryHelper.ftl");
+            case FreemarketConfigUtils.TYPE_LISTHTML:
+                return FreemarketConfigUtils.getInstance().getTemplate("list.ftl");
+            case FreemarketConfigUtils.TYPE_INSERTHTML:
+                return FreemarketConfigUtils.getInstance().getTemplate("insert.ftl");
+            case FreemarketConfigUtils.TYPE_UPDATEHTML:
+                return FreemarketConfigUtils.getInstance().getTemplate("update.ftl");
             default:
                 return null;
         }

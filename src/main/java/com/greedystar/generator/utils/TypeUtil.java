@@ -19,26 +19,26 @@ public class TypeUtil {
         switch (sqlType) {
             case Types.BIT:
             case Types.BOOLEAN:
-                sb.append("boolean");
+                sb.append("Boolean");
                 break;
             case Types.TINYINT:
-                sb.append("byte");
+                sb.append("Byte");
                 break;
             case Types.SMALLINT:
                 sb.append("short");
                 break;
             case Types.INTEGER:
-                sb.append("int");
+                sb.append("INTEGER");
                 break;
             case Types.BIGINT:
-                sb.append("long");
+                sb.append("Long");
                 break;
             case Types.REAL:
-                sb.append("float");
+                sb.append("Float");
                 break;
             case Types.FLOAT:
             case Types.DOUBLE:
-                sb.append("double");
+                sb.append("Double");
                 break;
             case Types.DECIMAL:
             case Types.NUMERIC:

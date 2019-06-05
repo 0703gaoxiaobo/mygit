@@ -28,6 +28,9 @@ public class TaskQueue {
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getDao())) {
             taskQueue.add(new DaoTask(className,tableInfos));
         }
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getHtml())) {
+            taskQueue.add(new HtmlTask(className,tableInfos));
+        }
 
     }
 

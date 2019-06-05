@@ -17,6 +17,9 @@ public class FreemarketConfigUtils {
     public final static int TYPE_REQUEST = 6;
     public final static int TYPE_RESPONSE = 7;
     public final static int TYPE_QUERYHELPER = 8;
+    public final static int TYPE_LISTHTML = 9;
+    public final static int TYPE_INSERTHTML = 10;
+    public final static int TYPE_UPDATEHTML = 11;
     private static Configuration configuration;
 
     public static synchronized Configuration getInstance() {

@@ -120,12 +120,12 @@ public class Configuration implements Serializable {
         private String request;
         private String response;
         private String queryHelper;
+        private String html;
 
         public Path() {
         }
 
-        public Path(String controller, String service, String interf, String dao, String entity,
-                    String mapper, String request, String response,String queryHelper) {
+        public Path(String controller, String service, String interf, String dao, String entity, String mapper, String request, String response, String queryHelper, String html) {
             this.controller = controller;
             this.service = service;
             this.interf = interf;
@@ -134,7 +134,16 @@ public class Configuration implements Serializable {
             this.mapper = mapper;
             this.request = request;
             this.response = response;
-            this.queryHelper=queryHelper;
+            this.queryHelper = queryHelper;
+            this.html = html;
+        }
+
+        public String getHtml() {
+            return html==null ? "" : html;
+        }
+
+        public void setHtml(String html) {
+            this.html = html;
         }
 
         public String getQueryHelper() {
@@ -221,6 +230,15 @@ public class Configuration implements Serializable {
         private String request;
         private String response;
         private String queryHelper;
+        private String html;
+
+        public String getHtml() {
+            return html==null ? "" : html;
+        }
+
+        public void setHtml(String html) {
+            this.html = html;
+        }
 
         public String getQueryHelper() {
             return queryHelper==null ? "" : queryHelper;
